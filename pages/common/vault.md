@@ -1,32 +1,33 @@
 # vault
 
-> Interact with HashiCorp Vault.
-> More information: <https://www.vaultproject.io/docs/commands>.
+> Interact with HashiCorp Vault (cloud or self-hosted).
+> Some subcommands such as `operator` have their own usage documentation.
+> More information: <https://developer.hashicorp.com/vault/docs/commands>.
 
-- Connect to a Vault server and initialize a new encrypted data store:
+- Login the CLI client against the Vault server, prompts for a (hidden) token:
 
-`vault init`
+`vault login`
 
-- Unseal (unlock) the vault, by providing one of the key shares needed to access the encrypted data store:
+- List available secret engines:
 
-`vault unseal {{key-share-x}}`
+`vault secrets list`
 
-- Authenticate the CLI client against the Vault server, using an authentication token:
+- Store a new secret in the vault, using the kv secret engine:
 
-`vault auth {{authentication_token}}`
+`vault kv put -mount {{secret}} {{keys_path}} {{key}}={{value}}`
 
-- Store a new secret in the vault, using the generic back-end called "secret":
+- Store a new secret with a list of key values from a file:
 
-`vault write secret/{{hello}} value={{world}}`
+`vault kv put -mount {{secret}} {{keys_path}} @{{path/to/file}}`
 
-- Read a value from the vault, using the generic back-end called "secret":
+- Read values from the vault:
 
-`vault read secret/{{hello}}`
+`vault kv get -mount {{secret}} {{keys_path}}`
 
-- Read a specific field from the value:
+- Read a specific field/key from the keys:
 
-`vault read -field={{field_name}} secret/{{hello}}`
+`vault kv get -mount {{secret}} -field {{field_name}} {{keys_path}}`
 
-- Seal (lock) the Vault server, by removing the encryption key of the data store from memory:
+- Display help:
 
-`vault seal`
+`vault {{[-h|--help]}}`
